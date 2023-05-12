@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from point_module import Point, Point_List, Discrete_Circle
+from line_module import Line_List, Line
 
 class Graph:
     """
@@ -21,6 +22,7 @@ class Graph:
         n_cols(int, optional) : The number of columns of subplots in the Figure object (default is 1).
         """
         self.fig, self.axes = plt.subplots(nrows=n_rows, ncols=n_cols)
+        self.fig.patch.set_facecolor('#D8BFD8')  # Light purple color
         self.fig.set_figheight(4 * n_rows)
         self.fig.set_figwidth(4 * n_cols)
         self.axes = self.axes.flatten() if isinstance(self.axes, np.ndarray) else [self.axes]
@@ -29,6 +31,21 @@ class Graph:
             ax.set_aspect(1.0)
             ax.set_xlim(-1.1, 1.1)
             ax.set_ylim(-1.1, 1.1)
+            ax.set_facecolor('#D8BFD8')
+
+        # Hide x and y axes
+        ax.spines['left'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        
+        # Hide top and right borders
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        
+        # Hide ticks and tick labels
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.xaxis.set_tick_params(size=0)
+        ax.yaxis.set_tick_params(size=0)
 
     def show(self) -> None:
         """
@@ -37,27 +54,18 @@ class Graph:
         plt.show()
 
     def plot(self, arg1, arg2=None):
-        """
-        Plots a line or a segment on the Graph object.
-
-        Parameters :
-        arg1 : If arg2 is None, arg1 is assumed to be a Line object, and a line will be plotted between its two endpoints.
-            Otherwise, arg1 and arg2 are assumed to be two Point objects, and a segment will be plotted between them.
-        arg2 : The second point for the segment to be plotted (default is None).
-        """
         if arg2 is None:
             line = arg1
             p1 = line.a
             p2 = line.b
-            x = [p1.x, p2.x]
-            y = [p1.y, p2.y]
-            self.axes.plot(x, y)
+            for ax in self.axes:
+                ax.plot([p1.x, p2.x], [p1.y, p2.y], color="black")
         else:
             p1 = arg1
             p2 = arg2
-            x = [p1.x, p2.x]
-            y = [p1.y, p2.y]
-            self.axes.plot(x, y)
+            for ax in self.axes:
+                ax.plot([p1.x, p2.x], [p1.y, p2.y], color="black")
+
 
     def add_point(self, point: Point) -> None:
         """
@@ -70,7 +78,6 @@ class Graph:
             ax.plot(point.x, point.y, 'o')
         self.fig.canvas.draw()
 
-
     def add_points(self, points: Point_List) -> None:
         """
         Adds a list of Point objects to the Graph object.
@@ -81,6 +88,10 @@ class Graph:
         for point in points:
             self.add_point(point)
     
+    def plot_Line_List(self, lst: Line_List):
+        for line in lst.lines:
+            self.plot(line)
+
     def add_circle(self, center: Point = (0, 0), radius: float = 1) -> None:
         """
         Adds a circle to the Graph object.
@@ -94,10 +105,3 @@ class Graph:
             ax.add_artist(circle)
         self.fig.canvas.draw()
 
-
-
-g = Graph()
-g.add_circle()
-circle = Discrete_Circle(7)
-g.add_points(circle.points)
-g.show()

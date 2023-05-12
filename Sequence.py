@@ -1,4 +1,4 @@
-class Sequence:
+class Series:
    
     def newfunc(period):
         if period is None:
@@ -12,12 +12,22 @@ class Sequence:
                 if x == y:
                     if i - j == 1:
                         result.append([j, j])
-                        result.extend(Sequence.newfunc(period[0:j] + period[i:]))
+                        result.extend(Series.newfunc(period[0:j] + period[i:]))
                         return result
                     result.append(period[j:i+1])
-                    result.extend(Sequence.newfunc(period[0:j] + period[i:]))
+                    result.extend(Series.newfunc(period[0:j] + period[i:]))
                     return result
 
         return result
     
-Sequence.newfunc([0,1,1,2,3,5])
+class Pisano:    
+    def pisano_period(modulo):
+        """
+        Returns the Pisano period for a given modulo.
+        """
+        pisano = [0, 1]
+        while True:
+            next_num = (pisano[-1] + pisano[-2]) % modulo
+            if next_num == 1 and pisano[-1] == 0:
+                return pisano
+            pisano.append(next_num)
