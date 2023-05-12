@@ -20,6 +20,12 @@ class Series:
 
         return result
     
+    def calculate_rows_columns(length, max_columns):
+        """Calculate the number of rows and columns based on the length of a list."""
+        num_columns = min(length, max_columns)
+        num_rows = (length - 1) // num_columns + 1
+        return num_rows, num_columns
+    
 class Pisano:    
     def pisano_period(modulo):
         """
