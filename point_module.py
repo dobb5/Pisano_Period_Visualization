@@ -16,7 +16,6 @@ class Point:
         Parameters :
         x (float) : x-coordinate of the point
         y (float) : y-coordinate of the point
-        index (int, optional): index of the point in a sequence (default 0)
         """
         self.x = x
         self.y = y
@@ -69,7 +68,7 @@ class Point_List:
     def __str__(self):
         return ", ".join(str(point) for point in self.points)
 
-class Descrete_Circle(Point_List):
+class Discrete_Circle(Point_List):
     """
     Atributes :
     points(Point[]) : list of Point Objects
@@ -82,6 +81,6 @@ class Descrete_Circle(Point_List):
             angle = i * (2*np.pi / num_points)
             x = radius * np.cos(angle)
             y = radius * np.sin(angle)
-            self.add_point(Point(x, y, i))
+            self.add_point(Point(x, y))
 
 
